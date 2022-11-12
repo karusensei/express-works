@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import {Exception} from "../exceptions/exception"
+import { Exception } from "../exceptions/exception"
 
 
 
@@ -7,13 +7,11 @@ import {Exception} from "../exceptions/exception"
 // Fake promise rejection
 const asyncErrorEmitter = (chance: number) => {
 	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			if ((Math.random() * 100) > chance) {
-				resolve("Logged!")
-			} else {
-				reject("ERROR-EMITTER => Reject")
-			}
-		}, 0)
+		if ((Math.random() * 100) > chance) {
+			resolve("Logged!")
+		} else {
+			reject("ERROR-EMITTER => Reject")
+		}
 	})
 }
 
@@ -23,7 +21,7 @@ export function errorLogger(err: Exception, req: Request, res: Response, next: N
 	asyncErrorEmitter(0).then(() => {
 		console.log("ERROR-LOGGER => OK")
 		err.report = "OK"
-		res.status(500).json({err})
+		res.status(500).json({ err })
 	}).catch((error) => {
 		console.log("ERROR-LOGGER => ERR")
 		err.report = error
