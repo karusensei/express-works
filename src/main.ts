@@ -2,8 +2,9 @@ import bodyParser from "body-parser"
 import express from "express"
 import morgan from "morgan"
 import * as dotenv from "dotenv"
-import { parseData, handleParsedData, endingProcess } from "./error.handling"
+import { parseData, handleParsedData, endingProcess } from "./controllers/throw.controller"
 import { errorHandler } from "./handlers/error.handler"
+import { errorLogger } from "./handlers/error.logger"
 
 dotenv.config()
 
@@ -14,8 +15,7 @@ app.use(morgan("dev"))
 
 
 app.post("/", parseData, handleParsedData, endingProcess)
-
-app.use(errorHandler)
+app.use(errorLogger, errorHandler)
 
 
 app.listen(process.env.PORT, () => {
